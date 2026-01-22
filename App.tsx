@@ -51,6 +51,7 @@ import { DonorRegistrationStep1 } from "./src/screens/DonorRegistrationStep1";
 import { DonorRegistrationStep2 } from "./src/screens/DonorRegistrationStep2";
 import { DonorRegistrationStep3 } from "./src/screens/DonorRegistrationStep3";
 import { DonorRegistrationStep4 } from "./src/screens/DonorRegistrationStep4";
+import { DonorRegistrationStep5 } from "./src/screens/DonorRegistrationStep5";
 import { DonorRegistrationComplete } from "./src/screens/DonorRegistrationComplete";
 import { DonorTabNavigator } from "./src/navigation/DonorTabNavigator";
 import { View, Text, StyleSheet } from "react-native";
@@ -67,7 +68,9 @@ type AppScreen =
   | "donorReg1"
   | "donorReg2"
   | "donorReg3"
+  | "donorReg3"
   | "donorReg4"
+  | "donorReg5"
   | "donorRegComplete"
   | "main";
 
@@ -191,8 +194,18 @@ export default function App() {
       {currentScreen === "donorReg4" && (
         <>
           <DonorRegistrationStep4
-            onFinish={() => setCurrentScreen("donorRegComplete")}
+            onNext={() => setCurrentScreen("donorReg5")}
             onBack={() => setCurrentScreen("donorReg3")}
+          />
+          <StatusBar style="dark" />
+        </>
+      )}
+
+      {currentScreen === "donorReg5" && (
+        <>
+          <DonorRegistrationStep5
+            onFinish={() => setCurrentScreen("donorRegComplete")}
+            onBack={() => setCurrentScreen("donorReg4")}
           />
           <StatusBar style="dark" />
         </>
