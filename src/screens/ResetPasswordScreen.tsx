@@ -36,6 +36,11 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ onSubm
                     autoCapitalize="none"
                 />
             </View>
+
+            {/* Submit Button */}
+            <TouchableOpacity style={styles.submitButton} onPress={onSubmit}>
+                <Text style={styles.submitButtonText}>Send Instructions</Text>
+            </TouchableOpacity>
         </SafeAreaView>
     );
 };
@@ -81,5 +86,17 @@ const styles = StyleSheet.create({
         paddingVertical: SPACING.m - 2,
         fontSize: FONT_SIZE.m,
         backgroundColor: '#F5F5F7',
+    },
+    submitButton: {
+        backgroundColor: COLORS.primary,
+        borderRadius: 8,
+        paddingVertical: SPACING.m,
+        alignItems: 'center',
+        marginTop: SPACING.l,
+    },
+    submitButtonText: {
+        color: COLORS.secondary,
+        fontSize: FONT_SIZE.m,
+        fontWeight: '600',
     },
 });

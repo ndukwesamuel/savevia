@@ -28,8 +28,13 @@
       "favicon": "./assets/favicon.png"
     },
     "extra": {
-      "eas": {}
+      "eas": {
+        "projectId": "acb8aa06-679d-406b-8f81-41f68e5898b0"
+      }
     },
-    "plugins": ["expo-font", "expo-asset"]
+    "plugins": [
+      "expo-font",
+      "expo-asset"
+    ]
   }
 }

@@ -90,6 +90,14 @@ export const CreateNewPasswordScreen: React.FC<CreateNewPasswordScreenProps> = (
                             </View>
                             <Text style={styles.requirementText}>One Special Character e.g !'^@*#(</Text>
                         </View>
+                        {/* Submit Button */}
+                        <TouchableOpacity
+                            style={[styles.submitButton, !hasMinLength || !hasUppercase || !hasSpecialChar || password !== confirmPassword ? styles.submitButtonDisabled : {}]}
+                            onPress={onComplete}
+                            disabled={!hasMinLength || !hasUppercase || !hasSpecialChar || password !== confirmPassword}
+                        >
+                            <Text style={styles.submitButtonText}>Reset Password</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </ScrollView>
@@ -191,5 +199,20 @@ const styles = StyleSheet.create({
     requirementText: {
         fontSize: FONT_SIZE.s,
         color: COLORS.text,
+    },
+    submitButton: {
+        backgroundColor: COLORS.primary,
+        borderRadius: 8,
+        paddingVertical: SPACING.m,
+        alignItems: 'center',
+        marginTop: SPACING.xl,
+    },
+    submitButtonDisabled: {
+        opacity: 0.5,
+    },
+    submitButtonText: {
+        color: COLORS.secondary,
+        fontSize: FONT_SIZE.m,
+        fontWeight: '600',
     },
 });

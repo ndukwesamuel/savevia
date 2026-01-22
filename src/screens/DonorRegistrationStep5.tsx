@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { COLORS, SPACING, FONT_SIZE } from '../constants/theme';
 
-interface DonorRegistrationStep4Props {
-    onNext: () => void;
+interface DonorRegistrationStep5Props {
+    onFinish: () => void;
     onBack: () => void;
 }
 
-export const DonorRegistrationStep4: React.FC<DonorRegistrationStep4Props> = ({ onNext, onBack }) => {
-    const [highBloodPressure, setHighBloodPressure] = useState<'yes' | 'no' | null>(null);
-    const [piercing, setPiercing] = useState<string>('fever');
-    const [animalBite, setAnimalBite] = useState<'yes' | 'no' | null>(null);
-    const [animalBiteDetails, setAnimalBiteDetails] = useState('');
+export const DonorRegistrationStep5: React.FC<DonorRegistrationStep5Props> = ({ onFinish, onBack }) => {
+    const [weight, setWeight] = useState('');
+    const [lastDonation, setLastDonation] = useState('');
+    const [medications, setMedications] = useState<'yes' | 'no' | null>(null);
+    const [medicationDetails, setMedicationDetails] = useState('');
 
     return (
         <SafeAreaView style={styles.container}>
@@ -21,86 +21,75 @@ export const DonorRegistrationStep4: React.FC<DonorRegistrationStep4Props> = ({ 
                 </TouchableOpacity>
 
                 <Text style={styles.title}>Register As A Donor</Text>
-                <Text style={styles.subtitle}>Fill in the correct details below</Text>
+                <Text style={styles.subtitle}>Final details to serve you better</Text>
 
                 <View style={styles.progressContainer}>
-                    <Text style={styles.progressText}>4/5</Text>
+                    <Text style={styles.progressText}>5/5</Text>
                     <View style={styles.progressBar}>
-                        <View style={[styles.progressFill, { width: '80%' }]} />
+                        <View style={[styles.progressFill, { width: '100%' }]} />
                     </View>
                 </View>
 
                 <View style={styles.form}>
+                    <View style={styles.inputGroup}>
+                        <Text style={styles.label}>Current Weight (kg)</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="e.g. 70"
+                            placeholderTextColor={COLORS.textLight}
+                            value={weight}
+                            onChangeText={setWeight}
+                            keyboardType="numeric"
+                        />
+                    </View>
+
+                    <View style={styles.inputGroup}>
+                        <Text style={styles.label}>When was your last donation?</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="e.g. 3 months ago (or leave blank if never)"
+                            placeholderTextColor={COLORS.textLight}
+                            value={lastDonation}
+                            onChangeText={setLastDonation}
+                        />
+                    </View>
+
                     <View style={styles.questionGroup}>
-                        <Text style={styles.questionText}>Do you have high blood pressure?</Text>
+                        <Text style={styles.questionText}>
+                            Are you currently taking any medications?
+                        </Text>
                         <View style={styles.radioGroup}>
-                            <TouchableOpacity style={styles.radioOption} onPress={() => setHighBloodPressure('yes')}>
+                            <TouchableOpacity style={styles.radioOption} onPress={() => setMedications('yes')}>
                                 <View style={styles.radio}>
-                                    {highBloodPressure === 'yes' && <View style={styles.radioSelected} />}
+                                    {medications === 'yes' && <View style={styles.radioSelected} />}
                                 </View>
                                 <Text style={styles.radioLabel}>Yes</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.radioOption} onPress={() => setHighBloodPressure('no')}>
+                            <TouchableOpacity style={styles.radioOption} onPress={() => setMedications('no')}>
                                 <View style={styles.radio}>
-                                    {highBloodPressure === 'no' && <View style={styles.radioSelected} />}
+                                    {medications === 'no' && <View style={styles.radioSelected} />}
                                 </View>
                                 <Text style={styles.radioLabel}>No</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
 
-                    <View style={styles.questionGroup}>
-                        <Text style={styles.questionText}>
-                            Have you had any body piercing in the past two years?
-                        </Text>
-                        <View style={styles.radioGroup}>
-                            {['Fever', 'Cold/Flu', 'Chronic Illness', 'None of the above'].map((opt) => (
-                                <TouchableOpacity key={opt} style={styles.radioOption} onPress={() => setPiercing(opt.toLowerCase())}>
-                                    <View style={styles.radio}>
-                                        {piercing === opt.toLowerCase() && <View style={styles.radioSelected} />}
-                                    </View>
-                                    <Text style={styles.radioLabel}>{opt}</Text>
-                                </TouchableOpacity>
-                            ))}
-                        </View>
-                    </View>
-
-                    <View style={styles.questionGroup}>
-                        <Text style={styles.questionText}>
-                            Have you ever been bitten by an animal in less than two years?
-                        </Text>
-                        <View style={styles.radioGroup}>
-                            <TouchableOpacity style={styles.radioOption} onPress={() => setAnimalBite('yes')}>
-                                <View style={styles.radio}>
-                                    {animalBite === 'yes' && <View style={styles.radioSelected} />}
-                                </View>
-                                <Text style={styles.radioLabel}>Yes</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.radioOption} onPress={() => setAnimalBite('no')}>
-                                <View style={styles.radio}>
-                                    {animalBite === 'no' && <View style={styles.radioSelected} />}
-                                </View>
-                                <Text style={styles.radioLabel}>No</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-
-                    {animalBite === 'yes' && (
+                    {medications === 'yes' && (
                         <View style={styles.inputGroup}>
                             <Text style={styles.label}>If Yes, please specify</Text>
                             <TextInput
                                 style={styles.input}
                                 placeholder="Enter Answer"
                                 placeholderTextColor={COLORS.textLight}
-                                value={animalBiteDetails}
-                                onChangeText={setAnimalBiteDetails}
+                                value={medicationDetails}
+                                onChangeText={setMedicationDetails}
                             />
                         </View>
                     )}
                 </View>
 
-                <TouchableOpacity style={styles.finishBtn} onPress={onNext}>
-                    <Text style={styles.finishBtnText}>Next Step</Text>
+                <TouchableOpacity style={styles.finishBtn} onPress={onFinish}>
+                    <Text style={styles.finishBtnText}>Finish Registration</Text>
                 </TouchableOpacity>
             </ScrollView>
         </SafeAreaView>
