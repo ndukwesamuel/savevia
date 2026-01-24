@@ -5,6 +5,7 @@ import { OngoingDonationScreen } from '../screens/OngoingDonationScreen';
 import { SaveALifeScreen } from '../screens/SaveALifeScreen';
 import { BloodBanksScreen } from '../screens/BloodBanksScreen';
 import { HamburgerMenu } from '../screens/HamburgerMenu';
+import { BloodRequestDetailsScreen } from '../screens/BloodRequestDetailsScreen';
 
 const Stack = createStackNavigator();
 
@@ -12,6 +13,7 @@ export const HomeStackNavigator = () => {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="HomeMain" component={DonorHomeScreen} />
+            <Stack.Screen name="BloodRequestDetails" component={BloodRequestDetailsScreen} />
             <Stack.Screen name="OngoingDonation" component={OngoingDonationScreen} />
             <Stack.Screen name="SaveALife" component={SaveALifeScreen} />
             <Stack.Screen name="BloodBanks" component={BloodBanksScreen} />
