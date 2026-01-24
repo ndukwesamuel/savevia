@@ -5,6 +5,10 @@ import { OngoingDonationScreen } from "../../screens/OngoingDonationScreen";
 import { SaveALifeScreen } from "../../screens/SaveALifeScreen";
 import { BloodBanksScreen } from "../../screens/BloodBanksScreen";
 import { HamburgerMenu } from "../../screens/HamburgerMenu";
+import { BloodRequestDetailsScreen } from "../../screens/BloodRequestDetailsScreen";
+import { EligibilityQuestionnaireScreen } from "../../screens/EligibilityQuestionnaireScreen";
+import { EligibilityConfirmedScreen } from "../../screens/EligibilityConfirmedScreen";
+import { ThankYouScreen } from "../../screens/ThankYouScreen";
 // import BottomTabNavigator from "../Bottomtabnavigator";
 // import BottomTabNavigator from "./Bottomtabnavigator";
 // import ProfileScreen from "../screens/settings/ProfileScreen";
@@ -49,6 +53,22 @@ const UserStacknavigator = () => {
       <Stack.Screen name="SaveALife" component={SaveALifeScreen} />
       <Stack.Screen name="BloodBanks" component={BloodBanksScreen} />
       <Stack.Screen name="Menu" component={HamburgerMenu} />
+
+      {/* <Stack.Screen name="RequestsList" component={BloodDonationRequestsScreen} /> */}
+      <Stack.Screen
+        name="RequestDetails"
+        component={BloodRequestDetailsScreen}
+      />
+      <Stack.Screen
+        name="EligibilityQuestionnaire"
+        component={EligibilityQuestionnaireScreen}
+      />
+      <Stack.Screen
+        name="EligibilityConfirmed"
+        component={EligibilityConfirmedScreen}
+      />
+      <Stack.Screen name="ThankYou" component={ThankYouScreen} />
+      {/* <Stack.Screen name="BloodBanks" component={BloodBanksScreen} /> */}
     </Stack.Navigator>
   );
 };
