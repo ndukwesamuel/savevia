@@ -96,7 +96,10 @@ import { COLORS } from "../../constants/theme";
 import { DonorHomeScreen } from "../../screens/DonorHomeScreen";
 import { BloodDonationRequestsScreen } from "../../screens/BloodDonationRequestsScreen";
 import ProfileScreen from "../../screens/ProfileScreen";
-
+import NotificationsScreen from "../../screens/Notification/NotificationsScreen";
+import RewardsScreen from "../../screens/RewardsScreen";
+import InboxScreen from "../../screens/InboxScreen";
+// import { NotificationsScreen } from "../../screens/NotificationsScreen";
 const Tab = createBottomTabNavigator();
 
 export default function UserBottomtabnavigator() {
@@ -136,7 +139,7 @@ export default function UserBottomtabnavigator() {
 
       <Tab.Screen
         name="Requests"
-        component={BloodDonationRequestsScreen}
+        component={InboxScreen}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
@@ -150,7 +153,7 @@ export default function UserBottomtabnavigator() {
 
       <Tab.Screen
         name="Notifications"
-        component={DonorHomeScreen}
+        component={NotificationsScreen}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
@@ -164,7 +167,7 @@ export default function UserBottomtabnavigator() {
 
       <Tab.Screen
         name="Rewards"
-        component={DonorHomeScreen}
+        component={RewardsScreen}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons

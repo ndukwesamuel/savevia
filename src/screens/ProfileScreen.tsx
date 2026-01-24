@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 // Type definitions
 interface UserData {
@@ -84,7 +85,7 @@ const StatItem: React.FC<StatItemProps> = ({
 
 const ProfileScreen: React.FC = () => {
   const [isAvailableToDonate, setIsAvailableToDonate] = useState<boolean>(true);
-
+  const navigation = useNavigation();
   // User data - in a real app, this would come from props or state management
   const userData: UserData = {
     name: "Mary Olayemi",
@@ -103,7 +104,7 @@ const ProfileScreen: React.FC = () => {
 
   const handleManageDetails = () => {
     console.log("Navigate to manage details");
-    // navigation.navigate('ManageDetails');
+    navigation.navigate("UpdateCredentialsScreen");
   };
 
   const handleDonationHistory = () => {
