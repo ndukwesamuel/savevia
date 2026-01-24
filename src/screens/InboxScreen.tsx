@@ -62,7 +62,7 @@ const InboxScreen: React.FC<InboxScreenProps> = ({ navigation }) => {
 
   const handleMessagePress = (messageId: string) => {
     console.log("Open message:", messageId);
-    // navigation?.navigate('Chat', { messageId });
+    navigation?.navigate("Chat", { messageId });
   };
 
   const handleBackPress = () => {

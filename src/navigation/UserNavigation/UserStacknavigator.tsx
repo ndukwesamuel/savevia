@@ -10,6 +10,7 @@ import { EligibilityQuestionnaireScreen } from "../../screens/EligibilityQuestio
 import { EligibilityConfirmedScreen } from "../../screens/EligibilityConfirmedScreen";
 import { ThankYouScreen } from "../../screens/ThankYouScreen";
 import UpdateCredentialsScreen from "../../screens/UpdateCredentialsScreen";
+import ChatScreen from "../../screens/ChatScreen";
 // import BottomTabNavigator from "../Bottomtabnavigator";
 // import BottomTabNavigator from "./Bottomtabnavigator";
 // import ProfileScreen from "../screens/settings/ProfileScreen";
@@ -74,6 +75,8 @@ const UserStacknavigator = () => {
         component={EligibilityConfirmedScreen}
       />
       <Stack.Screen name="ThankYou" component={ThankYouScreen} />
+      <Stack.Screen name="Chat" component={ChatScreen} />
+
       {/* <Stack.Screen name="BloodBanks" component={BloodBanksScreen} /> */}
     </Stack.Navigator>
   );

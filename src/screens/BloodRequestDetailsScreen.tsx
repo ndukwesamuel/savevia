@@ -1,125 +1,127 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, TextInput } from 'react-native';
-import { COLORS, SPACING, FONT_SIZE } from '../constants/theme';
+import React from 'react';
+import {
+    View,
+    Text,
+    StyleSheet,
+    ScrollView,
+    TouchableOpacity,
+    StatusBar
+} from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
+import { COLORS, SPACING, FONT_SIZE, BORDER_RADIUS, SHADOWS } from '../constants/theme';
 
-interface BloodRequestDetailsProps {
-    onContinue: () => void;
-    onBack: () => void;
-}
+export const BloodRequestDetailsScreen = ({ navigation, route }: any) => {
+    // Mock data - in real app this would come from API/route params
+    const requestDetails = route?.params || {
+        hospital: 'St Nicholas Hospital, Ajah.',
+        location: 'No 26, Thompson Street, Ajah',
+        reason: 'Surgery',
+        quantity: '2 pints',
+        bloodType: 'O+, AB, A+',
+        urgency: 'Immediate',
+        urgencyLevel: 'urgent' // urgent, moderate, low
+    };
 
-export const BloodRequestDetailsScreen: React.FC<BloodRequestDetailsProps> = ({ onContinue, onBack }) => {
-    const [hospitalName, setHospitalName] = useState('St Nicholas Hospital, Ajah');
-    const [location, setLocation] = useState('No 26, Thompson Street, Ajah');
-    const [reason, setReason] = useState('Surgery');
-    const [quantity, setQuantity] = useState('2 Pints');
-    const [bloodType, setBloodType] = useState('O+, AB, A+');
-    const [genotype, setGenotype] = useState('AA');
-    const [urgency, setUrgency] = useState('Immediate');
+    const getUrgencyColor = () => {
+        switch (requestDetails.urgencyLevel) {
+            case 'urgent':
+                return COLORS.urgentHigh;
+            case 'moderate':
+                return COLORS.urgentMedium;
+            default:
+                return COLORS.urgentLow;
+        }
+    };
 
     return (
         <View style={styles.container}>
-            {/* Back Button */}
-            <TouchableOpacity style={styles.backButton} onPress={onBack}>
-                <Text style={styles.backIcon}>←</Text>
-            </TouchableOpacity>
+            <StatusBar barStyle="dark-content" />
 
-            <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-                <Text style={styles.title}>Blood Request Details</Text>
-
-                {/* Form Fields */}
-                <View style={styles.formGroup}>
-                    <Text style={styles.label}>Name of Hospital</Text>
-                    <View style={styles.inputContainer}>
-                        <TextInput
-                            style={styles.input}
-                            value={hospitalName}
-                            onChangeText={setHospitalName}
-                            editable={false}
-                        />
-                    </View>
-                </View>
-
-                <View style={styles.formGroup}>
-                    <Text style={styles.label}>Location</Text>
-                    <View style={styles.inputContainer}>
-                        <TextInput
-                            style={styles.input}
-                            value={location}
-                            onChangeText={setLocation}
-                            editable={false}
-                        />
-                    </View>
-                </View>
-
-                <View style={styles.formGroup}>
-                    <Text style={styles.label}>Reason</Text>
-                    <View style={styles.inputContainer}>
-                        <TextInput
-                            style={styles.input}
-                            value={reason}
-                            onChangeText={setReason}
-                            editable={false}
-                        />
-                    </View>
-                </View>
-
-                <View style={styles.formGroup}>
-                    <Text style={styles.label}>Quantity Needed</Text>
-                    <View style={styles.inputContainer}>
-                        <TextInput
-                            style={styles.input}
-                            value={quantity}
-                            onChangeText={setQuantity}
-                            editable={false}
-                        />
-                    </View>
-                </View>
-
-                <View style={styles.formGroup}>
-                    <Text style={styles.label}>Blood Type Needed</Text>
-                    <View style={styles.inputContainer}>
-                        <TextInput
-                            style={styles.input}
-                            value={bloodType}
-                            onChangeText={setBloodType}
-                            editable={false}
-                        />
-                    </View>
-                </View>
-
-                <View style={styles.formGroup}>
-                    <Text style={styles.label}>Genotype</Text>
-                    <View style={styles.inputContainer}>
-                        <TextInput
-                            style={styles.input}
-                            value={genotype}
-                            onChangeText={setGenotype}
-                            editable={false}
-                        />
-                    </View>
-                </View>
-
-                <View style={styles.formGroup}>
-                    <Text style={styles.label}>Urgency Level</Text>
-                    <View style={styles.inputContainer}>
-                        <TextInput
-                            style={styles.input}
-                            value={urgency}
-                            onChangeText={setUrgency}
-                            editable={false}
-                        />
-                    </View>
-                </View>
-
-                <View style={{ height: 100 }} />
-            </ScrollView>
-
-            {/* Continue Button */}
-            <View style={styles.footer}>
-                <TouchableOpacity style={styles.continueButton} onPress={onContinue}>
-                    <Text style={styles.continueButtonText}>Continue</Text>
+            {/* Header */}
+            <View style={styles.header}>
+                <TouchableOpacity
+                    style={styles.backButton}
+                    onPress={() => navigation.goBack()}
+                >
+                    <Ionicons name="arrow-back" size={24} color={COLORS.text} />
                 </TouchableOpacity>
+                <Text style={styles.headerTitle}>Blood Request Details</Text>
+                <View style={{ width: 40 }} />
             </View>
+
+            <ScrollView
+                style={styles.scrollView}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.scrollContent}
+            >
+                {/* Name of Hospital */}
+                <View style={styles.fieldContainer}>
+                    <Text style={styles.label}>Name of Hospital</Text>
+                    <View style={styles.inputBox}>
+                        <Text style={styles.inputText}>{requestDetails.hospital}</Text>
+                    </View>
+                </View>
+
+                {/* Location */}
+                <View style={styles.fieldContainer}>
+                    <Text style={styles.label}>Location</Text>
+                    <View style={[styles.inputBox, styles.locationBox]}>
+                        <Text style={[styles.inputText, styles.locationText]}>
+                            {requestDetails.location}
+                        </Text>
+                        <TouchableOpacity>
+                            <Text style={styles.viewMapText}>View Map</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+
+                {/* Reason */}
+                <View style={styles.fieldContainer}>
+                    <Text style={styles.label}>Reason</Text>
+                    <View style={styles.inputBox}>
+                        <Text style={styles.inputText}>{requestDetails.reason}</Text>
+                    </View>
+                </View>
+
+                {/* Quantity Needed */}
+                <View style={styles.fieldContainer}>
+                    <Text style={styles.label}>Quantity Needed</Text>
+                    <View style={styles.inputBox}>
+                        <Text style={styles.inputText}>{requestDetails.quantity}</Text>
+                    </View>
+                </View>
+
+                {/* Blood Type Needed */}
+                <View style={styles.fieldContainer}>
+                    <Text style={styles.label}>Blood Type Needed</Text>
+                    <View style={styles.inputBox}>
+                        <Text style={styles.inputText}>{requestDetails.bloodType}</Text>
+                    </View>
+                </View>
+
+                {/* Urgency Level */}
+                <View style={styles.fieldContainer}>
+                    <Text style={styles.label}>Urgency Level</Text>
+                    <View style={[styles.urgencyBox, { backgroundColor: getUrgencyColor() }]}>
+                        <Text style={styles.urgencyText}>{requestDetails.urgency}</Text>
+                    </View>
+                </View>
+
+                {/* Continue Button */}
+                <TouchableOpacity style={styles.continueButton}>
+                    <LinearGradient
+                        colors={[COLORS.gradientStart, COLORS.gradientEnd]}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 0 }}
+                        style={styles.continueButtonGradient}
+                    >
+                        <Text style={styles.continueButtonText}>Continue</Text>
+                    </LinearGradient>
+                </TouchableOpacity>
+
+                <View style={{ height: 40 }} />
+            </ScrollView>
         </View>
     );
 };
@@ -129,63 +131,92 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: COLORS.background,
     },
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: SPACING.l,
+        paddingTop: 50,
+        paddingBottom: SPACING.m,
+        backgroundColor: COLORS.background,
+    },
     backButton: {
-        position: 'absolute',
-        top: SPACING.l,
-        left: SPACING.m,
         width: 40,
         height: 40,
         justifyContent: 'center',
-        zIndex: 10,
+        alignItems: 'flex-start',
     },
-    backIcon: {
-        fontSize: 24,
+    headerTitle: {
+        fontSize: FONT_SIZE.xl,
+        fontWeight: '600',
         color: COLORS.text,
     },
     scrollView: {
         flex: 1,
-        paddingTop: SPACING.xxl,
-        paddingHorizontal: SPACING.m,
     },
-    title: {
-        fontSize: FONT_SIZE.xl,
-        fontWeight: '600',
-        color: COLORS.text,
-        marginBottom: SPACING.xl,
+    scrollContent: {
+        paddingHorizontal: SPACING.l,
+        paddingTop: SPACING.l,
     },
-    formGroup: {
+    fieldContainer: {
         marginBottom: SPACING.l,
     },
     label: {
-        fontSize: FONT_SIZE.s,
+        fontSize: FONT_SIZE.m,
+        fontWeight: '500',
         color: COLORS.text,
-        marginBottom: SPACING.xs,
+        marginBottom: SPACING.s,
     },
-    inputContainer: {
-        backgroundColor: '#F5F5F7',
-        borderRadius: 8,
+    inputBox: {
+        backgroundColor: '#E8E5F3',
+        borderRadius: BORDER_RADIUS.m,
+        borderWidth: 1,
+        borderColor: '#D1CCEB',
         paddingHorizontal: SPACING.m,
-    },
-    input: {
         paddingVertical: SPACING.m,
+    },
+    inputText: {
         fontSize: FONT_SIZE.m,
         color: COLORS.text,
     },
-    footer: {
-        padding: SPACING.m,
-        borderTopWidth: 1,
-        borderTopColor: '#E5E5EA',
-        backgroundColor: COLORS.background,
+    locationBox: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    locationText: {
+        flex: 1,
+        marginRight: SPACING.m,
+    },
+    viewMapText: {
+        fontSize: FONT_SIZE.m,
+        color: '#4CAF50',
+        fontWeight: '600',
+    },
+    urgencyBox: {
+        borderRadius: BORDER_RADIUS.m,
+        paddingVertical: SPACING.m,
+        paddingHorizontal: SPACING.m,
+        alignItems: 'center',
+    },
+    urgencyText: {
+        fontSize: FONT_SIZE.m,
+        fontWeight: '600',
+        color: COLORS.secondary,
     },
     continueButton: {
-        backgroundColor: COLORS.primary,
+        marginTop: SPACING.xl,
+        borderRadius: BORDER_RADIUS.m,
+        overflow: 'hidden',
+        ...SHADOWS.medium,
+    },
+    continueButtonGradient: {
         paddingVertical: SPACING.m,
-        borderRadius: 8,
         alignItems: 'center',
     },
     continueButtonText: {
+        fontSize: FONT_SIZE.l,
+        fontWeight: '700',
         color: COLORS.secondary,
-        fontSize: FONT_SIZE.m,
-        fontWeight: '600',
     },
 });
