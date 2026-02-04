@@ -5,6 +5,12 @@ import { OngoingDonationScreen } from "../../screens/OngoingDonationScreen";
 import { SaveALifeScreen } from "../../screens/SaveALifeScreen";
 import { BloodBanksScreen } from "../../screens/BloodBanksScreen";
 import { HamburgerMenu } from "../../screens/HamburgerMenu";
+import { BloodRequestDetailsScreen } from "../../screens/BloodRequestDetailsScreen";
+import { EligibilityQuestionnaireScreen } from "../../screens/EligibilityQuestionnaireScreen";
+import { EligibilityConfirmedScreen } from "../../screens/EligibilityConfirmedScreen";
+import { ThankYouScreen } from "../../screens/ThankYouScreen";
+import UpdateCredentialsScreen from "../../screens/UpdateCredentialsScreen";
+import ChatScreen from "../../screens/ChatScreen";
 // import BottomTabNavigator from "../Bottomtabnavigator";
 // import BottomTabNavigator from "./Bottomtabnavigator";
 // import ProfileScreen from "../screens/settings/ProfileScreen";
@@ -32,6 +38,7 @@ export type RootStackParamList = {
   BloodBanks: undefined;
   Menu: undefined;
   About: undefined;
+  UpdateCredentialsScreen: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -49,6 +56,28 @@ const UserStacknavigator = () => {
       <Stack.Screen name="SaveALife" component={SaveALifeScreen} />
       <Stack.Screen name="BloodBanks" component={BloodBanksScreen} />
       <Stack.Screen name="Menu" component={HamburgerMenu} />
+      <Stack.Screen
+        name="UpdateCredentialsScreen"
+        component={UpdateCredentialsScreen}
+      />
+
+      {/* <Stack.Screen name="RequestsList" component={BloodDonationRequestsScreen} /> */}
+      <Stack.Screen
+        name="RequestDetails"
+        component={BloodRequestDetailsScreen}
+      />
+      <Stack.Screen
+        name="EligibilityQuestionnaire"
+        component={EligibilityQuestionnaireScreen}
+      />
+      <Stack.Screen
+        name="EligibilityConfirmed"
+        component={EligibilityConfirmedScreen}
+      />
+      <Stack.Screen name="ThankYou" component={ThankYouScreen} />
+      <Stack.Screen name="Chat" component={ChatScreen} />
+
+      {/* <Stack.Screen name="BloodBanks" component={BloodBanksScreen} /> */}
     </Stack.Navigator>
   );
 };

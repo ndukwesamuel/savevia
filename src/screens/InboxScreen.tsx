@@ -1,165 +1,268 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { COLORS, SPACING, FONT_SIZE } from '../constants/theme';
+import React from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  SafeAreaView,
+  StatusBar,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
-export const InboxScreen = () => {
-    const messages = [
-        { id: 1, sender: 'St Nicholas Hospital, Ajah', message: 'Thank you very much', time: '12:06 PM', avatar: 'S', unread: false },
-        { id: 2, sender: 'Dr Kehinde Olatunji', message: 'Thank you for saving lives...', time: '12:06 PM', avatar: 'D', unread: false },
-        { id: 3, sender: 'Dr Remota Olaleye', message: 'Thank you for saving lives...', time: '12:06 PM', avatar: 'D', unread: false },
-        { id: 4, sender: 'Susan Akintunde', message: 'Where are you now?', time: '12:06 PM', avatar: 'S', unread: true, badgeCount: 1 },
-        { id: 5, sender: 'Richard Ojere', message: 'I am on my way', time: '12:06 PM', avatar: 'R', unread: false, hasCheckmark: true },
-    ];
+interface Message {
+  id: string;
+  name: string;
+  message: string;
+  time: string;
+  avatar?: string;
+  unreadCount?: number;
+  hasCheck?: boolean;
+}
 
-    return (
-        <View style={styles.container}>
-            {/* Header */}
-            <View style={styles.header}>
-                <TouchableOpacity style={styles.backButton}>
-                    <Text style={styles.backIcon}>←</Text>
-                </TouchableOpacity>
-                <Text style={styles.title}>Inbox</Text>
-                <View style={styles.placeholder} />
+interface InboxScreenProps {
+  navigation?: any;
+}
+
+const InboxScreen: React.FC<InboxScreenProps> = ({ navigation }) => {
+  const messages: Message[] = [
+    {
+      id: "1",
+      name: "St Nicholas Hospital, Ajah",
+      message: "Thank you very much",
+      time: "12:06 PM",
+    },
+    {
+      id: "2",
+      name: "Dr Kehinde Olatunji",
+      message: "Thank you for saving lives.....",
+      time: "12:06 PM",
+    },
+    {
+      id: "3",
+      name: "Dr Ramota Olaleye",
+      message: "Thank you for saving lives.....",
+      time: "12:06 PM",
+    },
+    {
+      id: "4",
+      name: "Susan Akintunde",
+      message: "Where are you now?",
+      time: "12:06 PM",
+      unreadCount: 1,
+    },
+    {
+      id: "5",
+      name: "Josephine Cole",
+      message: "I am on my way",
+      time: "12:06 PM",
+      hasCheck: true,
+    },
+  ];
+
+  const handleMessagePress = (messageId: string) => {
+    console.log("Open message:", messageId);
+    navigation?.navigate("Chat", { messageId });
+  };
+
+  const handleBackPress = () => {
+    navigation?.goBack();
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="#DC143C" />
+
+      {/* Curved Red Header */}
+      <View style={styles.headerCurve}>
+        {/* <Text style={styles.time}>9:41</Text> */}
+      </View>
+
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.contentContainer}
+        showsVerticalScrollIndicator={false}
+      >
+        {messages.map((message, index) => (
+          <TouchableOpacity
+            key={message.id}
+            style={[
+              styles.messageItem,
+              index < messages.length - 1 && styles.messageItemBorder,
+            ]}
+            onPress={() => handleMessagePress(message.id)}
+            activeOpacity={0.7}
+          >
+            {/* Avatar */}
+            <View style={styles.avatarContainer}>
+              <View style={styles.avatar} />
             </View>
 
-            {/* Messages List */}
-            <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-                {messages.map((message) => (
-                    <TouchableOpacity key={message.id} style={styles.messageItem}>
-                        <View style={styles.messageAvatar}>
-                            <Text style={styles.messageAvatarText}>{message.avatar}</Text>
-                        </View>
-                        <View style={styles.messageContent}>
-                            <Text style={[styles.messageSender, message.unread && styles.unreadText]}>{message.sender}</Text>
-                            <View style={styles.messagePreview}>
-                                {message.hasCheckmark && <Text style={styles.checkmark}>✓</Text>}
-                                <Text style={[styles.messageText, message.unread && styles.unreadText]} numberOfLines={1}>
-                                    {message.message}
-                                </Text>
-                            </View>
-                        </View>
-                        <View style={styles.messageRight}>
-                            <Text style={[styles.messageTime, message.unread && styles.unreadTextRed]}>{message.time}</Text>
-                            {message.badgeCount && (
-                                <View style={styles.unreadBadge}>
-                                    <Text style={styles.unreadBadgeText}>{message.badgeCount}</Text>
-                                </View>
-                            )}
-                        </View>
-                    </TouchableOpacity>
-                ))}
-                <View style={{ height: 20 }} />
-            </ScrollView>
-        </View>
-    );
+            {/* Message Content */}
+            <View style={styles.messageContent}>
+              <Text style={styles.messageName}>{message.name}</Text>
+              <View style={styles.messageTextRow}>
+                {message.hasCheck && (
+                  <Ionicons
+                    name="checkmark"
+                    size={16}
+                    color="#10B981"
+                    style={styles.checkIcon}
+                  />
+                )}
+                <Text
+                  style={[
+                    styles.messageText,
+                    message.unreadCount && styles.messageTextUnread,
+                  ]}
+                  numberOfLines={1}
+                >
+                  {message.message}
+                </Text>
+              </View>
+            </View>
+
+            {/* Time and Badge */}
+            <View style={styles.messageRight}>
+              <Text
+                style={[
+                  styles.messageTime,
+                  message.unreadCount && styles.messageTimeUnread,
+                ]}
+              >
+                {message.time}
+              </Text>
+              {message.unreadCount && message.unreadCount > 0 && (
+                <View style={styles.unreadBadge}>
+                  <Text style={styles.unreadBadgeText}>
+                    {message.unreadCount}
+                  </Text>
+                </View>
+              )}
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+    </SafeAreaView>
+  );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: COLORS.background,
-    },
-    header: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingHorizontal: SPACING.m,
-        paddingTop: SPACING.l,
-        paddingBottom: SPACING.m,
-    },
-    backButton: {
-        width: 40,
-        height: 40,
-        justifyContent: 'center',
-    },
-    backIcon: {
-        fontSize: 24,
-        color: COLORS.text,
-    },
-    title: {
-        fontSize: FONT_SIZE.xl,
-        fontWeight: '600',
-        color: COLORS.text,
-    },
-    placeholder: {
-        width: 40,
-    },
-    scrollView: {
-        flex: 1,
-    },
-    messageItem: {
-        flexDirection: 'row',
-        paddingHorizontal: SPACING.m,
-        paddingVertical: SPACING.m,
-        borderBottomWidth: 1,
-        borderBottomColor: '#E5E5EA',
-    },
-    messageAvatar: {
-        width: 48,
-        height: 48,
-        borderRadius: 24,
-        backgroundColor: COLORS.primary,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: SPACING.m,
-    },
-    messageAvatarText: {
-        color: COLORS.secondary,
-        fontSize: 20,
-        fontWeight: '600',
-    },
-    messageContent: {
-        flex: 1,
-        justifyContent: 'center',
-    },
-    messageSender: {
-        fontSize: FONT_SIZE.m,
-        fontWeight: '500',
-        color: COLORS.text,
-        marginBottom: 4,
-    },
-    messagePreview: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    checkmark: {
-        fontSize: 14,
-        color: COLORS.primary,
-        marginRight: 4,
-    },
-    messageText: {
-        fontSize: FONT_SIZE.s,
-        color: COLORS.textLight,
-        flex: 1,
-    },
-    messageRight: {
-        justifyContent: 'center',
-        alignItems: 'flex-end',
-    },
-    messageTime: {
-        fontSize: FONT_SIZE.xs,
-        color: COLORS.textLight,
-        marginBottom: 4,
-    },
-    unreadBadge: {
-        width: 20,
-        height: 20,
-        borderRadius: 10,
-        backgroundColor: COLORS.primary,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    unreadBadgeText: {
-        color: COLORS.secondary,
-        fontSize: FONT_SIZE.xs,
-        fontWeight: '600',
-    },
-    unreadText: {
-        fontWeight: '600',
-        color: COLORS.text,
-    },
-    unreadTextRed: {
-        color: COLORS.primary,
-        fontWeight: '600',
-    },
+  container: {
+    flex: 1,
+    backgroundColor: "#FAFAFA",
+  },
+  headerCurve: {
+    backgroundColor: "#DC143C",
+    height: 80,
+    borderBottomLeftRadius: 150,
+    borderBottomRightRadius: 150,
+    paddingTop: 15,
+    paddingLeft: 20,
+  },
+  time: {
+    color: "#FFFFFF",
+    fontSize: 15,
+    fontWeight: "600",
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    marginTop: 10,
+  },
+  backButton: {
+    padding: 4,
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#000",
+    flex: 1,
+    textAlign: "center",
+    marginRight: 28,
+  },
+  placeholder: {
+    width: 28,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  contentContainer: {
+    paddingBottom: 20,
+  },
+  messageItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    backgroundColor: "#FFFFFF",
+  },
+  messageItemBorder: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#F0F0F0",
+  },
+  avatarContainer: {
+    marginRight: 12,
+  },
+  avatar: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: "#D1D5DB",
+  },
+  messageContent: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  messageName: {
+    fontSize: 15,
+    fontWeight: "600",
+    color: "#000",
+    marginBottom: 4,
+  },
+  messageTextRow: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  checkIcon: {
+    marginRight: 4,
+  },
+  messageText: {
+    fontSize: 13,
+    color: "#6B7280",
+    flex: 1,
+  },
+  messageTextUnread: {
+    color: "#DC143C",
+  },
+  messageRight: {
+    alignItems: "flex-end",
+    marginLeft: 8,
+  },
+  messageTime: {
+    fontSize: 12,
+    color: "#9CA3AF",
+    marginBottom: 4,
+  },
+  messageTimeUnread: {
+    color: "#DC143C",
+  },
+  unreadBadge: {
+    backgroundColor: "#DC143C",
+    borderRadius: 10,
+    width: 20,
+    height: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  unreadBadgeText: {
+    color: "#FFFFFF",
+    fontSize: 11,
+    fontWeight: "600",
+  },
 });
+
+export default InboxScreen;
